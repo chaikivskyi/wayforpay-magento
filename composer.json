@@ -4,7 +4,7 @@
   "description": "N/A",
   "type": "magento2-module",
   "require": {
-    "php": ">= 7.4.*",
+    "php": ">=7.4.0",
     "magento/framework": "*",
     "magento/module-payment": "100.4.*",
     "magento/module-sales": "103.0.*",
