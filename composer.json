@@ -1,7 +1,7 @@
 {
   "name": "pich/wayforpay-magento",
   "version": "1.0.0",
-  "description": "N/A",
+  "description": "Magento 2 integration with WayForPay payment system",
   "type": "magento2-module",
   "require": {
     "php": ">=7.4.0",
