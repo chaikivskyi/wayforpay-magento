@@ -1,0 +1,24 @@
+{
+  "name": "pich/wayforpay-magento",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "php": ">= 7.4.*",
+    "magento/framework": "*",
+    "magento/module-payment": "100.4.*",
+    "magento/module-sales": "103.0.*",
+    "wayforpay/php-sdk": "1.0.*"
+  },
+  "license": [
+    "MIT"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Pich\\WayForPay\\": ""
+    }
+  }
+}

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Pich\WayForPay\Api\AdapterInterface" type="Pich\WayForPay\Model\Adapter\WayForPay"/>
+    <virtualType name="WayForPayCcFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Pich\WayForPay\Model\Ui\ConfigProvider::CC_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form\Cc</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\ConfigurableInfo</argument>
+            <argument name="valueHandlerPool" xsi:type="object">WayForPayCcValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">WayForPayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">WayForPayCcCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPaySpFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Pich\WayForPay\Model\Ui\ConfigProvider::SP_CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\ConfigurableInfo</argument>
+            <argument name="valueHandlerPool" xsi:type="object">WayForPaySpValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">WayForPayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">WayForPaySpCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayCcValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="title" xsi:type="string">WayForPayCcConfigValueHandler</item>
+                <item name="active" xsi:type="string">WayForPayCcConfigValueHandler</item>
+                <item name="default" xsi:type="string">WayForPayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPaySpValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="title" xsi:type="string">WayForPaySpConfigValueHandler</item>
+                <item name="active" xsi:type="string">WayForPaySpConfigValueHandler</item>
+                <item name="payment_action" xsi:type="string">WayForPaySpConfigValueHandler</item>
+                <item name="default" xsi:type="string">WayForPayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayCcConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">WayForPayCcConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPaySpConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">WayForPaySpConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayCcConfig" type="Pich\WayForPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Pich\WayForPay\Model\Ui\ConfigProvider::CC_CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPaySpConfig" type="Pich\WayForPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Pich\WayForPay\Model\Ui\ConfigProvider::SP_CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">Pich\WayForPay\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">WayForPayCountryValidator</item>
+                <item name="currency" xsi:type="string">Pich\WayForPay\Gateway\Validator\CurrencyValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayCcCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="sale" xsi:type="string">WayForPayCcSaleCommand</item>
+                <item name="refund" xsi:type="string">WayForPayRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPaySpCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="order" xsi:type="string">WayForPaySpPurchaseCommand</item>
+                <item name="refund" xsi:type="string">WayForPayRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayCcSaleCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Pich\WayForPay\Gateway\Request\ChargeRequestBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">Pich\WayForPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Pich\WayForPay\Gateway\Http\Client\Charge</argument>
+            <argument name="handler" xsi:type="object">PichWayForPaySaleHandler</argument>
+            <argument name="validator" xsi:type="object">PichWayForPayBaseResponseValidatorPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPaySpPurchaseCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">WayForPayPurchaseBuilderComposite</argument>
+            <argument name="transferFactory" xsi:type="object">Pich\WayForPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Pich\WayForPay\Gateway\Http\Client\Purchase</argument>
+            <argument name="handler" xsi:type="object">PichWayForPayPurchaseHandler</argument>
+            <argument name="validator" xsi:type="object">PichWayForPaySpResponseValidatorPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Pich\WayForPay\Gateway\Request\RefundRequestBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">Pich\WayForPay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Pich\WayForPay\Gateway\Http\Client\Refund</argument>
+            <argument name="handler" xsi:type="object">PichWayForPayRefundHandler</argument>
+            <argument name="validator" xsi:type="object">PichWayForPayBaseResponseValidatorPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayPurchaseBuilderComposite" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="saleData" xsi:type="string">Pich\WayForPay\Gateway\Request\ChargeRequestBuilder</item>
+                <item name="purchaseData" xsi:type="string">Pich\WayForPay\Gateway\Request\PurchaseRequestBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WayForPayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">Pich\WayForPay\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PichWayForPayBaseResponseValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="general" xsi:type="string">Pich\WayForPay\Gateway\Validator\GeneralResponseValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PichWayForPaySpResponseValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="general" xsi:type="string">Pich\WayForPay\Gateway\Validator\GeneralResponseValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PichWayForPaySaleHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="payment" xsi:type="string">Pich\WayForPay\Gateway\Response\ChargePaymentHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PichWayForPayPurchaseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="payment" xsi:type="string">Pich\WayForPay\Gateway\Response\PurchasePaymentHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PichWayForPayRefundHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="payment" xsi:type="string">Pich\WayForPay\Gateway\Response\RefundPaymentHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Pich\WayForPay\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Pich\WayForPay\Model\Ui\ConfigProvider::CODE</argument>
+        </arguments>
+    </type>
+
+    <type name="Pich\WayForPay\Gateway\Validator\CurrencyValidator">
+        <arguments>
+            <argument name="paymentConfig" xsi:type="object">Pich\WayForPay\Gateway\Config\Config</argument>
+        </arguments>
+    </type>
+
+    <type name="Pich\WayForPay\Gateway\Http\Client\Charge">
+        <arguments>
+            <argument name="paymentLogger" xsi:type="object">WayForPayLogger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="WayForPayLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">Pich\WayForPay\Gateway\Config\Config</argument>
+        </arguments>
+    </virtualType>
+</config>

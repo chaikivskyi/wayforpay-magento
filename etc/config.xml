@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <wayforpay>
+                <allowed_currencies>UAH</allowed_currencies>
+                <payment_action>authorize_capture</payment_action>
+                <cctypes>VISA,MASTERCARD</cctypes>
+                <useccv>1</useccv>
+                <is_gateway>1</is_gateway>
+                <can_use_checkout>1</can_use_checkout>
+                <can_sale>1</can_sale>
+                <can_authorize>0</can_authorize>
+                <can_capture>1</can_capture>
+                <can_refund>1</can_refund>
+                <can_order>1</can_order>
+                <debug>1</debug>
+            </wayforpay>
+            <wayforpay_cc>
+                <title>Wayforpay Credit Card</title>
+                <model>WayForPayCcFacade</model>
+            </wayforpay_cc>
+            <wayforpay_sp>
+                <payment_action>order</payment_action>
+                <title>Wayforpay Secure Page</title>
+                <model>WayForPaySpFacade</model>
+            </wayforpay_sp>
+        </payment>
+    </default>
+</config>
+
